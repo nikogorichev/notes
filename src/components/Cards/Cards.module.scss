@@ -1,0 +1,11 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

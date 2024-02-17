@@ -1,0 +1,27 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  height: 20px;
+  padding: 5px 30px 5px 15px;
+  border: 1px solid $grey;
+  border-radius: 6px;
+  caret-color: $primary;
+  &:visited,
+  &:focus,
+  &:hover {
+    outline: none;
+    border: 1px solid $primary !important;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  right: 65px;
+  top: 2px;
+}
