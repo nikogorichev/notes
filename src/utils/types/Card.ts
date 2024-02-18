@@ -3,6 +3,6 @@ export type Card = {
   title: string;
   description: string;
   tags: string[];
-  isFavorite: boolean;
-  isDeleted: boolean;
+  isFavorite?: boolean;
+  isDeleted?: boolean;
 };

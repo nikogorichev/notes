@@ -1,0 +1,15 @@
+@import "~/src/assets/styles/main.scss";
+
+.input {
+  height: 20px;
+  padding: 5px 30px 5px 15px;
+  border: 1px solid $grey;
+  border-radius: 6px;
+  caret-color: $secondary;
+  &:visited,
+  &:focus,
+  &:hover {
+    outline: none;
+    border: 1.5px solid $secondary;
+  }
+}
