@@ -8,6 +8,7 @@ import ModalWindow from "shared/ModalWindow/ModalWindow";
 const Cards = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
+
   return (
     <>
       <div className={styles.wrapper}>

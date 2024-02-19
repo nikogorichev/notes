@@ -34,44 +34,46 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
         <div className={styles.icon} onClick={closeBtnFunc}>
           <IconClose />
         </div>
-        <div className={styles.inputs}>
-          <Input
-            type="text"
-            name="title"
-            placeholder="Название"
-            value={values["title"]}
-            onChange={handleOnChange}
-            className={styles.inputModal}
-          />
-          <Textarea
-            name="description"
-            placeholder="Описание"
-            value={values["description"]}
-            onChange={handleOnChange}
-            className={styles.inputModal}
-          />
-          <TagList
-            selectedFilter={values["tags"]}
-            setSelectedFilter={(selectedTags) =>
-              setValues({ ...values, tags: selectedTags })
-            }
-          />
-          <div className={styles.selectedTags}>
-            {values["tags"].length
-              ? values["tags"].map((tag) => {
-                  return (
-                    <div
-                      key={tag}
-                      className={`${styles.tag} ${
-                        styles[`tag_${tagsDict[tag]["color"]}`]
-                      }`}
-                    ></div>
-                  );
-                })
-              : ""}
-          </div>
+        <div className={styles.selectedTags}>
+          {values["tags"].length
+            ? values["tags"].map((tag) => {
+                return (
+                  <div
+                    key={tag}
+                    className={`${styles.tag} ${
+                      styles[`tag_${tagsDict[tag]["color"]}`]
+                    }`}
+                  ></div>
+                );
+              })
+            : ""}
         </div>
-        <Button>Сохранить</Button>
+        <div className={styles.inputBlock}>
+          <div className={styles.inputs}>
+            <Input
+              type="text"
+              name="title"
+              placeholder="Название"
+              value={values["title"]}
+              onChange={handleOnChange}
+              className={styles.inputModal}
+            />
+            <Textarea
+              name="description"
+              placeholder="Описание"
+              value={values["description"]}
+              onChange={handleOnChange}
+              className={styles.inputModal}
+            />
+            <TagList
+              selectedFilter={values["tags"]}
+              setSelectedFilter={(selectedTags) =>
+                setValues({ ...values, tags: selectedTags })
+              }
+            />
+          </div>
+          <Button>Сохранить</Button>
+        </div>
       </div>
     </div>
   );

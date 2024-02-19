@@ -1,13 +1,16 @@
 import Cards from "components/Cards/Cards";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
+import CardsProvider from "providers/Cards/CardsProviders";
 
 const App = () => {
   return (
-    <div className="page-content">
-      <Sidebar />
-      <Cards/>
-    </div>
+    <CardsProvider>
+      <div className="page-content">
+        <Sidebar />
+        <Cards />
+      </div>
+    </CardsProvider>
   );
 };
 
