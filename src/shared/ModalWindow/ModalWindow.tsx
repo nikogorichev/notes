@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useId, useState } from "react";
 import styles from "./ModalWindow.module.scss";
 import { Card } from "utils/types/Card";
 import { ReactComponent as IconClose } from "assets/images/iconClose.svg";
@@ -8,17 +7,23 @@ import Textarea from "shared/Inputs/Textarea/Textarea";
 import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
+import CardsContext from "providers/Cards/CardsContext";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
-  selectedCard?: string;
+  selectedCard: string;
 };
 
 const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
-  const [values, setValues] = useState<Omit<Card, "id">>({
-    title: "",
-    description: "",
-    tags: [],
+  const { cards, setCards } = useContext(CardsContext);
+  const id = useId();
+  // eslint-disable-next-line no-console
+  console.log(id)
+  const [values, setValues] = useState<Card>({
+    id: cards[selectedCard]?.["id"] || id,
+    title: cards[selectedCard]?.["title"] || "",
+    description: cards[selectedCard]?.["description"] || "",
+    tags: cards[selectedCard]?.["tags"] || [],
   });
 
   const handleOnChange = (
@@ -26,6 +31,11 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   ) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
+  };
+
+  const handleAddCard = () => {
+    setCards({ ...cards, [id]: values });
+    closeBtnFunc()
   };
 
   return (
@@ -72,7 +82,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
               }
             />
           </div>
-          <Button>Сохранить</Button>
+          <Button onClick={handleAddCard}>Сохранить</Button>
         </div>
       </div>
     </div>

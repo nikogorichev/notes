@@ -9,3 +9,14 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.button {
+  @include circleButton;
+}
+
+.cardList {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

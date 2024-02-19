@@ -6,6 +6,12 @@
   border: 1px solid $grey;
   border-radius: 6px;
   caret-color: $secondary;
+  background-color: transparent;
+  @include mainText;
+  &::placeholder {
+    @include mainText;
+    color: $grey;
+  }
   &:visited,
   &:focus,
   &:hover {
