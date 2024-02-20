@@ -7,11 +7,17 @@ import Button from "shared/Button/Button";
 import { ReactComponent as IconAdd } from "assets/images/iconAdd.svg";
 
 const Cards = () => {
-  const { cards } = useContext(CardsContext);
+  const { cards, favoriteCards, deletedCards } = useContext(CardsContext);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
 
   // eslint-disable-next-line no-console
   console.log(cards);
+
+  // eslint-disable-next-line no-console
+  console.log(favoriteCards);
+  
+   // eslint-disable-next-line no-console
+   console.log(deletedCards);
 
   return (
     <>

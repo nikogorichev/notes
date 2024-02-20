@@ -1,6 +1,6 @@
 @mixin circleButton {
   border: 0;
-  padding: 0;
+  padding: 0 !important;
   border-radius: 50%;
   width: 32px;
   height: 32px;

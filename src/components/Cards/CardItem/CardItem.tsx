@@ -3,12 +3,48 @@ import styles from "./CardItem.module.scss";
 import { tagsDict } from "utils/dict/TagsDict";
 import Button from "shared/Button/Button";
 import { ReactComponent as IconBasket } from "assets/images/iconBasket.svg";
+import { useContext } from "react";
+import CardsContext from "providers/Cards/CardsContext";
 
 type CardItemProps = {
   card: Card;
 };
 
 const CardItem = ({ card }: CardItemProps) => {
+  const {
+    favoriteCards,
+    deletedCards,
+    cards,
+    setFavoriteCards,
+    setDeletedCards,
+    setCards,
+  } = useContext(CardsContext);
+
+  const handleSetFavoriteCards = () => {
+    favoriteCards.includes(card.id)
+      ? setFavoriteCards(
+          [...favoriteCards].filter((favorite) => favorite !== card.id)
+        )
+      : setFavoriteCards([...favoriteCards, card.id]);
+  };
+
+  const handleDeleteCards = () => {
+    if (!deletedCards.includes(card.id)) {
+      setDeletedCards([...deletedCards, card.id]);
+    } else {
+      setDeletedCards(
+        [...deletedCards].filter((deleted) => deleted !== card.id)
+      );
+      const newCardList: Record<string, Card> = {};
+      Object.keys(cards).forEach((key) => {
+        if (key !== card.id) {
+          newCardList[key] = cards[key];
+        }
+      });
+      setCards(newCardList);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.tagsList}>
@@ -29,10 +65,10 @@ const CardItem = ({ card }: CardItemProps) => {
         <div className={styles.header}>
           <p className={styles.title}>{card.title}</p>
           <div className={styles.buttons}>
-            <Button className={styles.button}>
-            <IconBasket />
+            <Button className={styles.button} onClick={handleSetFavoriteCards}>
+              <IconBasket />
             </Button>
-            <Button className={styles.button}>
+            <Button className={styles.button} onClick={handleDeleteCards}>
               <IconBasket />
             </Button>
           </div>
