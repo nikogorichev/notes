@@ -1,0 +1,23 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  padding: 30px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  @include circleButton;
+}
+
+.cardList {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

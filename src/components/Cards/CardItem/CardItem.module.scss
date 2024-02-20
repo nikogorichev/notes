@@ -1,0 +1,70 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  display: flex;
+  column-gap: 20px;
+  width: 400px;
+  min-height: 200px;
+  background-color: $white;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12),
+      0px 4px 16px rgba(0, 140, 255, 0.4);
+  }
+}
+
+.tagsList {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  height: 100%;
+}
+
+.tag {
+  height: 100%;
+  @each $name, $color in $colors-list {
+    &_#{$name} {
+      background-color: $color;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  padding: 20px 10px 10px 10px;
+  width: 100%;
+
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @include title;
+}
+
+.description {
+  @include listMainText;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  @include circleButton;
+}
+
+.selectedAsFavorite  {
+  & path {
+    fill: $white;
+    stroke: none
+  }
+}

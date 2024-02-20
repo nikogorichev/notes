@@ -1,0 +1,44 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  background-color: $white;
+  cursor: pointer;
+  &:hover {
+    & > div:first-child {
+      background-color: $secondary;
+    }
+    & path {
+      fill: $secondary;
+    }
+  }
+}
+
+.flag {
+  height: 60px;
+  width: 10px;
+  &_selected {
+    @extend .flag;
+    background-color: $primary;
+  }
+}
+
+.icon {
+  & path {
+    fill: $grey;
+  }
+
+  &_selected {
+    & path {
+      fill: $primary;
+    }
+  }
+}
+
+.title {
+  @include mainText;
+}

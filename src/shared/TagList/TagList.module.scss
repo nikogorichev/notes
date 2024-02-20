@@ -1,0 +1,28 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.btn {
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12),
+      0px 4px 16px rgba(0, 140, 255, 0.4);
+  }
+
+  @each $name, $color in $colors-list {
+    &_#{$name} {
+      background-color: $color;
+    }
+  }
+
+  &_selected {
+    border: 2.5px solid $primary;
+  }
+}

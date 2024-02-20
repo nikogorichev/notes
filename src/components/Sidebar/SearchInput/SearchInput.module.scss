@@ -1,0 +1,13 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 25px;
+  top: 2px;
+}

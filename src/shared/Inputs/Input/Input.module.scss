@@ -1,0 +1,21 @@
+@import "~/src/assets/styles/main.scss";
+
+.input {
+  height: 20px;
+  padding: 5px 30px 5px 15px;
+  border: 1px solid $grey;
+  border-radius: 6px;
+  caret-color: $secondary;
+  background-color: transparent;
+  @include mainText;
+  &::placeholder {
+    @include mainText;
+    color: $grey;
+  }
+  &:visited,
+  &:focus,
+  &:hover {
+    outline: none;
+    border: 1.5px solid $secondary;
+  }
+}
