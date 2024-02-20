@@ -17,8 +17,7 @@ type ModalWindowProps = {
 const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   const { cards, setCards } = useContext(CardsContext);
   const id = useId();
-  // eslint-disable-next-line no-console
-  console.log(id)
+
   const [values, setValues] = useState<Card>({
     id: cards[selectedCard]?.["id"] || id,
     title: cards[selectedCard]?.["title"] || "",
@@ -34,8 +33,8 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   };
 
   const handleAddCard = () => {
-    setCards({ ...cards, [id]: values });
-    closeBtnFunc()
+    setCards({ ...cards, [values.id]: values });
+    closeBtnFunc();
   };
 
   return (

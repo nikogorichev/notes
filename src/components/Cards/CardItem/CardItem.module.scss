@@ -61,3 +61,10 @@
 .button {
   @include circleButton;
 }
+
+.selectedAsFavorite  {
+  & path {
+    fill: $white;
+    stroke: none
+  }
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CardsContext from "./CardsContext";
 import { Card } from "utils/types/Card";
+import { SelectedListType } from "utils/types/SelectedList";
 
 type CardsProviderProps = {
   children: JSX.Element;
@@ -12,6 +13,7 @@ const CardsProvider = ({ children }: CardsProviderProps) => {
   const [favoriteCards, setFavoriteCards] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedList, setSelectedList] = useState<SelectedListType>("all");
 
   return (
     <CardsContext.Provider
@@ -21,11 +23,13 @@ const CardsProvider = ({ children }: CardsProviderProps) => {
         favoriteCards,
         filters,
         searchValue,
+        selectedList,
         setCards,
         setDeletedCards,
         setFavoriteCards,
         setFilters,
         setSearchValue,
+        setSelectedList,
       }}
     >
       {children}
