@@ -9,17 +9,14 @@ import { Card } from "utils/types/Card";
 import TagList from "shared/TagList/TagList";
 
 const Cards = () => {
-  const {
-    cards,
-    selectedList,
-    deletedCards,
-    favoriteCards,
-    searchValue,
-    filters,
-    setFilters,
-  } = useContext(CardsContext);
+  const { cards, selectedList, searchValue } = useContext(CardsContext);
   const [currentCards, setCurrentCards] = useState<Record<string, Card>>({});
+  const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(cards));
+  }, [cards]);
 
   useEffect(() => {
     // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ?
@@ -27,24 +24,24 @@ const Cards = () => {
     Object.entries(cards).forEach(([id, value]) => {
       switch (selectedList) {
         case "all":
-          if (!deletedCards.includes(id)) {
+          if (!value.isDeleted) {
             filteredObjectOfCard[id] = value;
           }
           break;
         case "deleted":
-          if (deletedCards.includes(id)) {
+          if (value.isDeleted) {
             filteredObjectOfCard[id] = value;
           }
           break;
         case "favorites":
-          if (favoriteCards.includes(id)) {
+          if (value.isFavorite) {
             filteredObjectOfCard[id] = value;
           }
           break;
       }
     });
     setCurrentCards(filteredObjectOfCard);
-  }, [selectedList, cards, deletedCards, favoriteCards]);
+  }, [selectedList, cards]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useId, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import styles from "./ModalWindow.module.scss";
 import { Card } from "utils/types/Card";
 import { ReactComponent as IconClose } from "assets/images/iconClose.svg";
@@ -16,10 +16,10 @@ type ModalWindowProps = {
 
 const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   const { cards, setCards } = useContext(CardsContext);
-  const id = useId();
 
   const [values, setValues] = useState<Card>({
-    id: cards[selectedCard]?.["id"] || id,
+    // КАК ФОРМИРОВАТЬ ID
+    id: cards[selectedCard]?.["id"] || new Date().toString().toString(),
     title: cards[selectedCard]?.["title"] || "",
     description: cards[selectedCard]?.["description"] || "",
     tags: cards[selectedCard]?.["tags"] || [],
@@ -81,7 +81,9 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
               }
             />
           </div>
-          <Button onClick={handleAddCard}>Сохранить</Button>
+          <Button onClick={handleAddCard} disabled={!values["title"]}>
+            Сохранить
+          </Button>
         </div>
       </div>
     </div>

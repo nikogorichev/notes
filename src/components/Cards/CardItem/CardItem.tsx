@@ -15,35 +15,26 @@ type CardItemProps = {
 
 const CardItem = ({ card }: CardItemProps) => {
   const {
-    favoriteCards,
-    deletedCards,
     cards,
-    setFavoriteCards,
-    setDeletedCards,
+
     setCards,
   } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSetFavoriteCards = () => {
-    favoriteCards.includes(card.id)
-      ? setFavoriteCards(
-          [...favoriteCards].filter((favorite) => favorite !== card.id)
-        )
-      : setFavoriteCards([...favoriteCards, card.id]);
+    const selectedCard = card;
+    selectedCard.isFavorite = !card.isFavorite;
+    setCards({ ...cards, [card.id]: selectedCard });
   };
 
   const handleDeleteCards = () => {
-    if (!deletedCards.includes(card.id)) {
-      setDeletedCards([...deletedCards, card.id]);
-      favoriteCards.includes(card.id) &&
-        setFavoriteCards(
-          [...favoriteCards].filter((favorite) => favorite !== card.id)
-        );
+    if (!card.isDeleted) {
+      setCards({
+        ...cards,
+        [card.id]: { ...card, isDeleted: true, isFavorite: false },
+      });
     } else {
-      setDeletedCards(
-        [...deletedCards].filter((deleted) => deleted !== card.id)
-      );
       const newCardList: Record<string, Card> = {};
       Object.keys(cards).forEach((key) => {
         if (key !== card.id) {
@@ -75,7 +66,7 @@ const CardItem = ({ card }: CardItemProps) => {
           <div className={styles.header}>
             <p className={styles.title}>{card.title}</p>
             <div className={styles.buttons}>
-              {!deletedCards.includes(card.id) ? (
+              {!card.isDeleted ? (
                 <>
                   <Button
                     className={styles.button}
@@ -83,9 +74,7 @@ const CardItem = ({ card }: CardItemProps) => {
                   >
                     <IconFavorite
                       className={
-                        favoriteCards.includes(card.id)
-                          ? styles.selectedAsFavorite
-                          : ""
+                        card.isFavorite ? styles.selectedAsFavorite : ""
                       }
                     />
                   </Button>
