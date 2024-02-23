@@ -33,7 +33,15 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   };
 
   const handleAddCard = () => {
-    setCards([...cards, values]);
+    if (selectedCard) {
+      const newValueCards = cards.map((element) =>
+        element.id === values.id ? values : element
+      );
+      setCards(newValueCards);
+    } else {
+      setCards([...cards, values]);
+    }
+
     closeBtnFunc();
   };
 

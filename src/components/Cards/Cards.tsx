@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./Cards.module.scss";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
@@ -8,11 +7,9 @@ import Button from "shared/Button/Button";
 import { ReactComponent as IconAdd } from "assets/images/iconAdd.svg";
 import { Card } from "utils/types/Card";
 import TagList from "shared/TagList/TagList";
-import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
 const Cards = () => {
   const { cards, selectedCategory, searchValue } = useContext(CardsContext);
-  const [currentCards, setCurrentCards] = useState<Card[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
 
@@ -43,42 +40,23 @@ const Cards = () => {
   const filterBySearch = (card: Card) => {
     if (card.title.toLowerCase().includes(searchValue.toLowerCase())) {
       return card;
-    } else {
-      return
     }
   };
 
+  const filterByTags = (card: Card) => {
+    if (filters.length) {
+      if (card.tags.some((tag) => filters.includes(tag))) {
+        return card;
+      }
+    } else return card;
+  };
+
   const filteredCards = useMemo(() => {
-    return cards.filter(filterByCategory).filter(filterBySearch);
-  }, [cards, selectedCategory]);
-
-  //   // eslint-disable-next-line no-console
-  //  console.log(filteredCards);
-
-  // useEffect(() => {
-  //   // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ? Да
-  //   const filteredObjectOfCard: Card[] = [];
-  //   cards.forEach((value) => {
-  //     switch (selectedCategory) {
-  //       case "all":
-  //         if (!value.isDeleted) {
-  //           filteredObjectOfCard.push(value);
-  //         }
-  //         break;
-  //       case "deleted":
-  //         if (value.isDeleted) {
-  //           filteredObjectOfCard.push(value);
-  //         }
-  //         break;
-  //       case "favorites":
-  //         if (value.isFavorite) {
-  //           filteredObjectOfCard.push(value);
-  //         }
-  //         break;
-  //     }
-  //   });
-  //   setCurrentCards(filteredObjectOfCard);
-  // }, [selectedCategory, cards]);
+    return cards
+      .filter(filterByCategory)
+      .filter(filterBySearch)
+      .filter(filterByTags);
+  }, [cards, selectedCategory, searchValue, filters]);
 
   return (
     <>
