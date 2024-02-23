@@ -1,22 +1,22 @@
 import { createContext } from "react";
 import { Card } from "utils/types/Card";
-import { SelectedListType } from "utils/types/SelectedList";
+import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
 type CardsContextType = {
   cards: Card[];
   searchValue: string;
-  selectedList: SelectedListType;
+  selectedCategory: SelectedCategoryType;
 
   setCards: (cards: Card[]) => void;
   setSearchValue: (value: string) => void;
-  setSelectedList: (value: SelectedListType) => void;
+  setSelectedCategory: (value: SelectedCategoryType) => void;
 };
 
 export default createContext<CardsContextType>({
   cards: [],
   searchValue: "",
   setCards: (cards: Card[]) => cards,
-  selectedList: "all",
+  selectedCategory: "all",
   setSearchValue: (value: string) => value,
-  setSelectedList: (value: SelectedListType) => value,
+  setSelectedCategory: (value: SelectedCategoryType) => value,
 });

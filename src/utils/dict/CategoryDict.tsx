@@ -1,10 +1,10 @@
 import { ReactComponent as IconBasket } from "assets/images/iconBasket.svg";
 import { ReactComponent as IconFavorite } from "assets/images/iconFavorite.svg";
 import { ReactComponent as IconAllList } from "assets/images/iconAllList.svg";
-import { SelectedListType } from "utils/types/SelectedList";
+import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
-export const listDict: Record<
-  SelectedListType,
+export const categoryDict: Record<
+  SelectedCategoryType,
   { title: string; icon: JSX.Element }
 > = {
   all: { title: "Весь список", icon: <IconAllList /> },
@@ -12,6 +12,8 @@ export const listDict: Record<
   deleted: { title: "Удаленные", icon: <IconBasket /> },
 };
 
-export const test = Object.entries<{ title: string; icon: JSX.Element }>(listDict)
+export const test = Object.entries<{ title: string; icon: JSX.Element }>(
+  categoryDict
+);
 
 // getEntries => замена Object.entries с корректной типизацией

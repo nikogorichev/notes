@@ -1,0 +1,1 @@
+export type SelectedCategoryType = "all" | "deleted" | "favorites"

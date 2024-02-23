@@ -8,9 +8,10 @@ import Button from "shared/Button/Button";
 import { ReactComponent as IconAdd } from "assets/images/iconAdd.svg";
 import { Card } from "utils/types/Card";
 import TagList from "shared/TagList/TagList";
+import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
 const Cards = () => {
-  const { cards, selectedList, searchValue } = useContext(CardsContext);
+  const { cards, selectedCategory, searchValue } = useContext(CardsContext);
   const [currentCards, setCurrentCards] = useState<Card[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
@@ -19,39 +20,65 @@ const Cards = () => {
     localStorage.setItem("notes", JSON.stringify(cards));
   }, [cards]); //useLocalStorage
 
-  //   const filteredNotes = useMemo(() => {
-  //     const notes: Record<string, Card> = {}
+  const filterByCategory = (card: Card) => {
+    switch (selectedCategory) {
+      case "all":
+        if (!card.isDeleted) {
+          return card;
+        }
+        break;
+      case "deleted":
+        if (card.isDeleted) {
+          return card;
+        }
+        break;
+      case "favorites":
+        if (card.isFavorite) {
+          return card;
+        }
+        break;
+    }
+  };
 
-  //     // return notes
-  //     //     .filter(filterByTags)
-  //     //     .filter(filterBySearch)
-  //     //     .filter(filterByCategory);
-  // }, [selectedList, cards]);
+  const filterBySearch = (card: Card) => {
+    if (card.title.toLowerCase().includes(searchValue.toLowerCase())) {
+      return card;
+    } else {
+      return
+    }
+  };
 
-  useEffect(() => {
-    // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ? Да
-    const filteredObjectOfCard: Card[] = [];
-    cards.forEach((value) => {
-      switch (selectedList) {
-        case "all":
-          if (!value.isDeleted) {
-            filteredObjectOfCard.push(value);
-          }
-          break;
-        case "deleted":
-          if (value.isDeleted) {
-            filteredObjectOfCard.push(value);
-          }
-          break;
-        case "favorites":
-          if (value.isFavorite) {
-            filteredObjectOfCard.push(value);
-          }
-          break;
-      }
-    });
-    setCurrentCards(filteredObjectOfCard);
-  }, [selectedList, cards]);
+  const filteredCards = useMemo(() => {
+    return cards.filter(filterByCategory).filter(filterBySearch);
+  }, [cards, selectedCategory]);
+
+  //   // eslint-disable-next-line no-console
+  //  console.log(filteredCards);
+
+  // useEffect(() => {
+  //   // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ? Да
+  //   const filteredObjectOfCard: Card[] = [];
+  //   cards.forEach((value) => {
+  //     switch (selectedCategory) {
+  //       case "all":
+  //         if (!value.isDeleted) {
+  //           filteredObjectOfCard.push(value);
+  //         }
+  //         break;
+  //       case "deleted":
+  //         if (value.isDeleted) {
+  //           filteredObjectOfCard.push(value);
+  //         }
+  //         break;
+  //       case "favorites":
+  //         if (value.isFavorite) {
+  //           filteredObjectOfCard.push(value);
+  //         }
+  //         break;
+  //     }
+  //   });
+  //   setCurrentCards(filteredObjectOfCard);
+  // }, [selectedCategory, cards]);
 
   return (
     <>
@@ -69,17 +96,9 @@ const Cards = () => {
           />
         </div>
         <div className={styles.cardList}>
-          {currentCards
-            .filter(
-              (card) =>
-                card.title.toLowerCase().includes(searchValue.toLowerCase()) &&
-                (filters.length
-                  ? card.tags.some((tag) => filters.includes(tag))
-                  : true)
-            )
-            .map((card) => {
-              return <CardItem key={card.id} card={card} />;
-            })}
+          {filteredCards.map((card) => {
+            return <CardItem key={card.id} card={card} />;
+          })}
         </div>
       </div>
       {isOpenWindow ? (
