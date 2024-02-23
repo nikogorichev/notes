@@ -11,7 +11,7 @@ import CardsContext from "providers/Cards/CardsContext";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
-  selectedCard: string;
+  selectedCard?: Card;
 };
 
 const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
@@ -19,10 +19,10 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
 
   const [values, setValues] = useState<Card>({
     // КАК ФОРМИРОВАТЬ ID
-    id: cards[selectedCard]?.["id"] || new Date().toString().toString(),
-    title: cards[selectedCard]?.["title"] || "",
-    description: cards[selectedCard]?.["description"] || "",
-    tags: cards[selectedCard]?.["tags"] || [],
+    id: selectedCard?.["id"] || new Date().toString().toString(),
+    title: selectedCard?.["title"] || "",
+    description: selectedCard?.["description"] || "",
+    tags: selectedCard?.["tags"] || [],
   });
 
   const handleOnChange = (
@@ -33,7 +33,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   };
 
   const handleAddCard = () => {
-    setCards({ ...cards, [values.id]: values });
+    setCards([...cards, values]);
     closeBtnFunc();
   };
 

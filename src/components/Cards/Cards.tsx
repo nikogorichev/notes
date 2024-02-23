@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./Cards.module.scss";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
 import CardsContext from "providers/Cards/CardsContext";
@@ -10,32 +11,41 @@ import TagList from "shared/TagList/TagList";
 
 const Cards = () => {
   const { cards, selectedList, searchValue } = useContext(CardsContext);
-  const [currentCards, setCurrentCards] = useState<Record<string, Card>>({});
+  const [currentCards, setCurrentCards] = useState<Card[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(cards));
-  }, [cards]);
+  }, [cards]); //useLocalStorage
+
+  //   const filteredNotes = useMemo(() => {
+  //     const notes: Record<string, Card> = {}
+
+  //     // return notes
+  //     //     .filter(filterByTags)
+  //     //     .filter(filterBySearch)
+  //     //     .filter(filterByCategory);
+  // }, [selectedList, cards]);
 
   useEffect(() => {
-    // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ?
-    const filteredObjectOfCard: Record<string, Card> = {};
-    Object.entries(cards).forEach(([id, value]) => {
+    // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ? Да
+    const filteredObjectOfCard: Card[] = [];
+    cards.forEach((value) => {
       switch (selectedList) {
         case "all":
           if (!value.isDeleted) {
-            filteredObjectOfCard[id] = value;
+            filteredObjectOfCard.push(value);
           }
           break;
         case "deleted":
           if (value.isDeleted) {
-            filteredObjectOfCard[id] = value;
+            filteredObjectOfCard.push(value);
           }
           break;
         case "favorites":
           if (value.isFavorite) {
-            filteredObjectOfCard[id] = value;
+            filteredObjectOfCard.push(value);
           }
           break;
       }
@@ -59,7 +69,7 @@ const Cards = () => {
           />
         </div>
         <div className={styles.cardList}>
-          {Object.values(currentCards)
+          {currentCards
             .filter(
               (card) =>
                 card.title.toLowerCase().includes(searchValue.toLowerCase()) &&
@@ -73,10 +83,7 @@ const Cards = () => {
         </div>
       </div>
       {isOpenWindow ? (
-        <ModalWindow
-          closeBtnFunc={() => setIsOpenWindow(false)}
-          selectedCard=""
-        />
+        <ModalWindow closeBtnFunc={() => setIsOpenWindow(false)} />
       ) : (
         ""
       )}

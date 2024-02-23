@@ -3,21 +3,19 @@ import { Card } from "utils/types/Card";
 import { SelectedListType } from "utils/types/SelectedList";
 
 type CardsContextType = {
-  cards: Record<string, Card>;
+  cards: Card[];
   searchValue: string;
   selectedList: SelectedListType;
 
-  setCards: (cards: Record<string, Card>) => void;
+  setCards: (cards: Card[]) => void;
   setSearchValue: (value: string) => void;
   setSelectedList: (value: SelectedListType) => void;
 };
 
 export default createContext<CardsContextType>({
-  cards: {},
+  cards: [],
   searchValue: "",
-  setCards: (cards: Record<string, Card>) => {
-    cards;
-  },
+  setCards: (cards: Card[]) => cards,
   selectedList: "all",
   setSearchValue: (value: string) => value,
   setSelectedList: (value: SelectedListType) => value,

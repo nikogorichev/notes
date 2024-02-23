@@ -11,3 +11,7 @@ export const listDict: Record<
   favorites: { title: "Избранные", icon: <IconFavorite /> },
   deleted: { title: "Удаленные", icon: <IconBasket /> },
 };
+
+export const test = Object.entries<{ title: string; icon: JSX.Element }>(listDict)
+
+// getEntries => замена Object.entries с корректной типизацией

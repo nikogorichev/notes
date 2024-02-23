@@ -8,10 +8,10 @@ type CardsProviderProps = {
 };
 
 const CardsProvider = ({ children }: CardsProviderProps) => {
-  const [cards, setCards] = useState<Record<string, Card>>(
+  const [cards, setCards] = useState<Card[]>(
     localStorage.getItem("notes")
       ? JSON.parse(localStorage.getItem("notes") || "")
-      : {}
+      : []
   );
   const [searchValue, setSearchValue] = useState("");
   const [selectedList, setSelectedList] = useState<SelectedListType>("all");

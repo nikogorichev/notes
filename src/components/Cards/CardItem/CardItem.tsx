@@ -16,32 +16,34 @@ type CardItemProps = {
 const CardItem = ({ card }: CardItemProps) => {
   const {
     cards,
-
     setCards,
   } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSetFavoriteCards = () => {
-    const selectedCard = card;
+    const selectedCard = Object.assign({}, card);
+ 
     selectedCard.isFavorite = !card.isFavorite;
-    setCards({ ...cards, [card.id]: selectedCard });
+    const newValueCards = cards.map((element) => {
+      
+      return element.id === selectedCard.id
+        ? { ...card, isFavorite: selectedCard.isFavorite }
+        : element;
+    });
+    setCards(newValueCards);
   };
 
   const handleDeleteCards = () => {
     if (!card.isDeleted) {
-      setCards({
-        ...cards,
-        [card.id]: { ...card, isDeleted: true, isFavorite: false },
-      });
+      const newValueCards = cards.map((element) =>
+        element.id === card.id
+          ? { ...card, isFavorite: false, isDeleted: true }
+          : element
+      );
+      setCards(newValueCards);
     } else {
-      const newCardList: Record<string, Card> = {};
-      Object.keys(cards).forEach((key) => {
-        if (key !== card.id) {
-          newCardList[key] = cards[key];
-        }
-      });
-      setCards(newCardList);
+      setCards(cards.filter((element) => element.id !== card.id));
     }
   };
 
@@ -100,7 +102,7 @@ const CardItem = ({ card }: CardItemProps) => {
       {isModalOpen ? (
         <ModalWindow
           closeBtnFunc={() => setIsModalOpen(false)}
-          selectedCard={card.id}
+          selectedCard={card}
         />
       ) : (
         ""
