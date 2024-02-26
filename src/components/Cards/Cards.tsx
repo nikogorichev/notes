@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import styles from "./Cards.module.scss";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
 import CardsContext from "providers/Cards/CardsContext";
@@ -12,10 +12,6 @@ const Cards = () => {
   const { cards, selectedCategory, searchValue } = useContext(CardsContext);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(cards));
-  }, [cards]); //useLocalStorage
 
   const filterByCategory = (card: Card) => {
     switch (selectedCategory) {

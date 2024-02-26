@@ -1,22 +1,24 @@
-import { createContext } from "react";
+import { Dispatch, createContext } from "react";
 import { Card } from "utils/types/Card";
 import { SelectedCategoryType } from "utils/types/SelectedCategory";
+
+// КАК ПРАВИЛЬНО ТИПИЗИРОВАТЬ КОНТЕКСТ
 
 type CardsContextType = {
   cards: Card[];
   searchValue: string;
   selectedCategory: SelectedCategoryType;
 
-  setCards: (cards: Card[]) => void;
-  setSearchValue: (value: string) => void;
-  setSelectedCategory: (value: SelectedCategoryType) => void;
+  setCards: Dispatch<React.SetStateAction<Card[]>>;
+  setSearchValue: Dispatch<React.SetStateAction<string>>;
+  setSelectedCategory: Dispatch<React.SetStateAction<SelectedCategoryType>>;
 };
 
 export default createContext<CardsContextType>({
   cards: [],
   searchValue: "",
-  setCards: (cards: Card[]) => cards,
+  setCards: (value) => value,
   selectedCategory: "all",
-  setSearchValue: (value: string) => value,
-  setSelectedCategory: (value: SelectedCategoryType) => value,
+  setSearchValue: (value) => value,
+  setSelectedCategory: (value) => value,
 });

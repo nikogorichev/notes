@@ -14,34 +14,31 @@ type CardItemProps = {
 };
 
 const CardItem = ({ card }: CardItemProps) => {
-  const {
-    cards,
-    setCards,
-  } = useContext(CardsContext);
+  const { cards, setCards } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSetFavoriteCards = () => {
     const selectedCard = Object.assign({}, card);
- 
     selectedCard.isFavorite = !card.isFavorite;
-    const newValueCards = cards.map((element) => {
-      
-      return element.id === selectedCard.id
-        ? { ...card, isFavorite: selectedCard.isFavorite }
-        : element;
-    });
-    setCards(newValueCards);
+    setCards((prev) =>
+      prev.map((element) => {
+        return element.id === selectedCard.id
+          ? { ...card, isFavorite: selectedCard.isFavorite }
+          : element;
+      })
+    );
   };
 
   const handleDeleteCards = () => {
     if (!card.isDeleted) {
-      const newValueCards = cards.map((element) =>
-        element.id === card.id
-          ? { ...card, isFavorite: false, isDeleted: true }
-          : element
+      setCards((prev) =>
+        prev.map((element) =>
+          element.id === card.id
+            ? { ...card, isFavorite: false, isDeleted: true }
+            : element
+        )
       );
-      setCards(newValueCards);
     } else {
       setCards(cards.filter((element) => element.id !== card.id));
     }
