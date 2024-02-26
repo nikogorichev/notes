@@ -9,14 +9,7 @@ const Sidebar = () => {
       <SearchInput />
       <div className={styles.container}>
         {categoryDictEntries.map(([list, content]) => {
-          return (
-            <ListButton
-              key={list}
-              // НЕПОНЯТНО КАК БЫТЬ
-              list={list}
-              content={content}
-            />
-          );
+          return <ListButton key={list} list={list} content={content} />;
         })}
       </div>
     </div>
