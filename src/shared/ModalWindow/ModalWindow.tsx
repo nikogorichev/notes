@@ -9,8 +9,7 @@ import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
 import CardsContext from "providers/Cards/CardsContext";
-import sanitizeHtml from "sanitize-html";
-import ContentEditable from "react-contenteditable";
+import ModalWindowEditor from "./ModalWindowEditor/ModalWindowEditor";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
@@ -49,17 +48,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
     closeBtnFunc();
   };
 
-  const onContentChange = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (event: any) => {
-      const sanitizeConf = {
-        allowedTags: ["b", "i", "a", "p"],
-        allowedAttributes: { a: ["href"] },
-      };
-      setContent(sanitizeHtml(event.currentTarget.innerHTML, sanitizeConf));
-    },
-    []
-  );
+  
 
   return (
     <div className={styles.container}>
@@ -82,17 +71,8 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
             : ""}
         </div>
         <div className={styles.inputBlock}>
-          <div>
-            <div className={content.length ? styles.displayNone : ""}>
-              Введите заголовок{" "}
-            </div>
-            <ContentEditable
-              onChange={onContentChange}
-              onBlur={onContentChange}
-              html={content}
-            />
-          </div>
-
+          
+              <ModalWindowEditor/>
           {/* <div className={styles.inputs}>
             <Input
               type="text"
