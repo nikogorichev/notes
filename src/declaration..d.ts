@@ -4,3 +4,5 @@ declare module "*.scss" {
 }
 declare module "*.svg";
 declare module "*.png";
+
+declare module 'sanitize-html'

@@ -1,4 +1,5 @@
-import { ChangeEvent, useContext, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChangeEvent, useCallback, useContext, useState } from "react";
 import styles from "./ModalWindow.module.scss";
 import { Card } from "utils/types/Card";
 import { ReactComponent as IconClose } from "assets/images/iconClose.svg";
@@ -8,6 +9,8 @@ import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
 import CardsContext from "providers/Cards/CardsContext";
+import sanitizeHtml from "sanitize-html";
+import ContentEditable from "react-contenteditable";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
@@ -24,6 +27,8 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
     description: selectedCard?.["description"] || "",
     tags: selectedCard?.["tags"] || [],
   });
+
+  const [content, setContent] = useState("");
 
   const handleOnChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -43,6 +48,18 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
 
     closeBtnFunc();
   };
+
+  const onContentChange = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (event: any) => {
+      const sanitizeConf = {
+        allowedTags: ["b", "i", "a", "p"],
+        allowedAttributes: { a: ["href"] },
+      };
+      setContent(sanitizeHtml(event.currentTarget.innerHTML, sanitizeConf));
+    },
+    []
+  );
 
   return (
     <div className={styles.container}>
@@ -65,7 +82,18 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
             : ""}
         </div>
         <div className={styles.inputBlock}>
-          <div className={styles.inputs}>
+          <div>
+            <div className={content.length ? styles.displayNone : ""}>
+              Введите заголовок{" "}
+            </div>
+            <ContentEditable
+              onChange={onContentChange}
+              onBlur={onContentChange}
+              html={content}
+            />
+          </div>
+
+          {/* <div className={styles.inputs}>
             <Input
               type="text"
               name="title"
@@ -87,7 +115,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
                 setValues({ ...values, tags: selectedTags })
               }
             />
-          </div>
+          </div> */}
           <Button onClick={handleAddCard} disabled={!values["title"]}>
             Сохранить
           </Button>
