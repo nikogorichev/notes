@@ -1,13 +1,14 @@
 @import "~/src/assets/styles/main.scss";
 
-// .wrapper {
-//     width: 400px;
-
-// }
+.wrapper {
+  position: relative;
+  width: 400px;
+  max-height: 200px;
+}
 
 .container {
   width: 400px;
-
+  height: 200px;
   outline: none;
-  background-color: aqua;
+  border: 1px solid $primary;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card } from "utils/types/Card";
 import styles from "./CardItem.module.scss";
 import { tagsDict } from "utils/dict/TagsDict";
@@ -5,9 +6,13 @@ import Button from "shared/Button/Button";
 import { ReactComponent as IconBasket } from "assets/images/iconBasket.svg";
 import { ReactComponent as IconFavorite } from "assets/images/iconFavorite.svg";
 import { ReactComponent as IconEdit } from "assets/images/iconEdit.svg";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import CardsContext from "providers/Cards/CardsContext";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
+import { Editable, Slate, withReact } from "slate-react";
+import { withHistory } from "slate-history";
+import { createEditor } from "slate";
+import { Element, Leaf } from "utils/slateEditor/toolbarElements";
 
 type CardItemProps = {
   card: Card;
@@ -17,6 +22,10 @@ const CardItem = ({ card }: CardItemProps) => {
   const { cards, setCards } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const editor = useMemo(
+    () => withHistory(withReact(createEditor())),
+    [card.description]
+  );
 
   const handleSetFavoriteCards = () => {
     const selectedCard = Object.assign({}, card);
@@ -43,6 +52,18 @@ const CardItem = ({ card }: CardItemProps) => {
       setCards(cards.filter((element) => element.id !== card.id));
     }
   };
+
+  const renderElement = useCallback(
+    (props: any) => <Element {...props} />,
+    [card.description]
+  );
+  const renderLeaf = useCallback(
+    (props: any) => <Leaf {...props} />,
+    [card.description]
+  );
+
+  // eslint-disable-next-line no-console
+  console.log(card.description);
 
   return (
     <>
@@ -93,7 +114,15 @@ const CardItem = ({ card }: CardItemProps) => {
               </Button>
             </div>
           </div>
-          <div className={styles.description}>{card.description}</div>
+          {/* <div className={styles.description}>{card.description}</div> */}
+          <Slate editor={editor} initialValue={card.description}>
+            <Editable
+              className={styles.container}
+              renderElement={renderElement}
+              renderLeaf={renderLeaf}
+              readOnly
+            />
+          </Slate>
         </div>
       </div>
       {isModalOpen ? (

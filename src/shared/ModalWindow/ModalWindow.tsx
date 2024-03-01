@@ -10,6 +10,7 @@ import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
 import CardsContext from "providers/Cards/CardsContext";
 import ModalWindowEditor from "./ModalWindowEditor/ModalWindowEditor";
+import { Descendant } from "slate";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
@@ -23,17 +24,25 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
     // КАК ФОРМИРОВАТЬ ID
     id: selectedCard?.["id"] || new Date().toString().toString(),
     title: selectedCard?.["title"] || "",
-    description: selectedCard?.["description"] || "",
+    description: selectedCard?.["description"] || [
+      {
+        children: [{ text: "" }],
+      },
+    ],
     tags: selectedCard?.["tags"] || [],
   });
-
-  const [content, setContent] = useState("");
 
   const handleOnChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
+  };
+
+  const handleOnChangeDescription = (
+    value: Descendant[]
+  ) => {
+    setValues({ ...values, description: value });
   };
 
   const handleAddCard = () => {
@@ -47,8 +56,6 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
 
     closeBtnFunc();
   };
-
-  
 
   return (
     <div className={styles.container}>
@@ -71,9 +78,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
             : ""}
         </div>
         <div className={styles.inputBlock}>
-          
-              <ModalWindowEditor/>
-          {/* <div className={styles.inputs}>
+          <div className={styles.inputs}>
             <Input
               type="text"
               name="title"
@@ -82,20 +87,14 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
               onChange={handleOnChange}
               className={styles.inputModal}
             />
-            <Textarea
-              name="description"
-              placeholder="Описание"
-              value={values["description"]}
-              onChange={handleOnChange}
-              className={styles.inputModal}
-            />
+            <ModalWindowEditor value={values["description"]} setValue={handleOnChangeDescription}/>
             <TagList
               selectedFilter={values["tags"]}
               setSelectedFilter={(selectedTags) =>
                 setValues({ ...values, tags: selectedTags })
               }
             />
-          </div> */}
+          </div>
           <Button onClick={handleAddCard} disabled={!values["title"]}>
             Сохранить
           </Button>
