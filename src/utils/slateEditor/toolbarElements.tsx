@@ -1,21 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/prop-types */
+import { RenderElementProps, RenderLeafProps } from "slate-react";
 
-import { Attributes } from "react";
-
-type ElementType = {
-  element: any;
-  children: string;
-  attributes: Attributes;
-};
-
-type LeafType = {
-  leaf: any;
-  children: JSX.Element;
-  attributes: Attributes;
-};
-
-export const Element = ({ attributes, children, element }: ElementType) => {
+export const Element = ({
+  attributes,
+  children,
+  element,
+}: RenderElementProps) => {
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -47,7 +36,7 @@ export const Element = ({ attributes, children, element }: ElementType) => {
   }
 };
 
-export const Leaf = ({ attributes, children, leaf }: LeafType) => {
+export const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }

@@ -1,10 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import styles from "./TextEditor.module.scss";
 import { useCallback, useMemo } from "react";
 import { Descendant, createEditor } from "slate";
 import { withHistory } from "slate-history";
-import { Editable, Slate, withReact } from "slate-react";
+import {
+  Editable,
+  RenderElementProps,
+  RenderLeafProps,
+  Slate,
+  withReact,
+} from "slate-react";
 import { Element, Leaf } from "utils/slateEditor/toolbarElements";
 import { BlockButton, Toolbar } from "./EditorComponents/EditorComponents";
 
@@ -16,8 +20,14 @@ type TextEditorProps = {
 const TextEditor = ({ value, setValue }: TextEditorProps) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-  const renderElement = useCallback((props: any) => <Element {...props} />, []);
-  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    []
+  );
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <Leaf {...props} />,
+    []
+  );
 
   return (
     <>

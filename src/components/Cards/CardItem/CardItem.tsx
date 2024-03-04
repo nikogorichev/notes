@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card } from "utils/types/Card";
 import styles from "./CardItem.module.scss";
 import { tagsDict } from "utils/dict/TagsDict";
@@ -9,7 +8,13 @@ import { ReactComponent as IconEdit } from "assets/images/iconEdit.svg";
 import { useCallback, useContext, useMemo, useState } from "react";
 import CardsContext from "providers/Cards/CardsContext";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
-import { Editable, Slate, withReact } from "slate-react";
+import {
+  Editable,
+  RenderElementProps,
+  RenderLeafProps,
+  Slate,
+  withReact,
+} from "slate-react";
 import { withHistory } from "slate-history";
 import { createEditor } from "slate";
 import { Element, Leaf } from "utils/slateEditor/toolbarElements";
@@ -22,10 +27,7 @@ const CardItem = ({ card }: CardItemProps) => {
   const { cards, setCards } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const editor = useMemo(
-    () => withHistory(withReact(createEditor())),
-    [card.description]
-  );
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   const handleSetFavoriteCards = () => {
     const selectedCard = Object.assign({}, card);
@@ -54,16 +56,13 @@ const CardItem = ({ card }: CardItemProps) => {
   };
 
   const renderElement = useCallback(
-    (props: any) => <Element {...props} />,
+    (props: RenderElementProps) => <Element {...props} />,
     [card.description]
   );
   const renderLeaf = useCallback(
-    (props: any) => <Leaf {...props} />,
+    (props: RenderLeafProps) => <Leaf {...props} />,
     [card.description]
   );
-
-  // eslint-disable-next-line no-console
-  console.log(card.description);
 
   return (
     <>

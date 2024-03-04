@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import styles from "./EditorComponents.module.scss";
-
 import {
   Ref,
   PropsWithChildren,
@@ -9,8 +6,11 @@ import {
   LegacyRef,
   MouseEvent,
 } from "react";
-import { useSlate } from "slate-react";
+import { ReactEditor, useSlate } from "slate-react";
 import { BaseEditor, Editor, Element as SlateElement, Transforms } from "slate";
+import { HistoryEditor } from "slate-history";
+
+type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 
 interface BaseProps {
   className: string;
@@ -69,9 +69,9 @@ export const Toolbar = forwardRef(
 Toolbar.displayName = "Toolbar";
 
 const isBlockActive = (
-  editor: BaseEditor,
+  editor: CustomEditor,
   format: string,
-  blockType = "type"
+  blockType: "align" | "type" = "type"
 ) => {
   const { selection } = editor;
   if (!selection) return false;
@@ -89,7 +89,7 @@ const isBlockActive = (
   return !!match;
 };
 
-const toggleBlock = (editor: BaseEditor, format: string) => {
+const toggleBlock = (editor: CustomEditor, format: string) => {
   const isActive = isBlockActive(
     editor,
     format,

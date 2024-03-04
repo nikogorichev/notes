@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent, useCallback, useContext, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import styles from "./ModalWindow.module.scss";
 import { Card } from "utils/types/Card";
 import { ReactComponent as IconClose } from "assets/images/iconClose.svg";
 import Input from "shared/Inputs/Input/Input";
-import Textarea from "shared/Inputs/Textarea/Textarea";
 import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
@@ -22,10 +20,11 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
 
   const [values, setValues] = useState<Card>({
     // КАК ФОРМИРОВАТЬ ID
-    id: selectedCard?.["id"] || new Date().toString().toString(),
+    id: selectedCard?.["id"] || new Date().toString(),
     title: selectedCard?.["title"] || "",
     description: selectedCard?.["description"] || [
       {
+        type: "paragraph",
         children: [{ text: "" }],
       },
     ],
@@ -39,16 +38,18 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleOnChangeDescription = (
-    value: Descendant[]
-  ) => {
+  const handleOnChangeDescription = (value: Descendant[]) => {
     setValues({ ...values, description: value });
   };
 
   const handleAddCard = () => {
     if (selectedCard) {
       setCards((prev) =>
-        prev.map((element) => (element.id === values.id ? values : element))
+        prev.map((element) =>
+          element.id === values.id
+            ? { ...values, id: new Date().toString() }
+            : element
+        )
       );
     } else {
       setCards([...cards, values]);
@@ -80,15 +81,18 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
         <div className={styles.inputBlock}>
           <div className={styles.inputs}>
             <div>
-            <Input
-              type="text"
-              name="title"
-              placeholder="Название"
-              value={values["title"]}
-              onChange={handleOnChange}
-              className={styles.inputModal}
-            />
-            <TextEditor value={values["description"]} setValue={handleOnChangeDescription}/>
+              <Input
+                type="text"
+                name="title"
+                placeholder="Название"
+                value={values["title"]}
+                onChange={handleOnChange}
+                className={styles.inputModal}
+              />
+              <TextEditor
+                value={values["description"]}
+                setValue={handleOnChangeDescription}
+              />
             </div>
             <TagList
               selectedFilter={values["tags"]}
