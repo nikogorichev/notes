@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 
+import { Attributes } from "react";
+
 type ElementType = {
   element: any;
-  children: any;
-  attributes: any;
+  children: string;
+  attributes: Attributes;
 };
 
 type LeafType = {
   leaf: any;
-  children: any;
-  attributes: any;
+  children: JSX.Element;
+  attributes: Attributes;
 };
 
 export const Element = ({ attributes, children, element }: ElementType) => {

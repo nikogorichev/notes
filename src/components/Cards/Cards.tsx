@@ -5,53 +5,23 @@ import CardsContext from "providers/Cards/CardsContext";
 import CardItem from "./CardItem/CardItem";
 import Button from "shared/Button/Button";
 import { ReactComponent as IconAdd } from "assets/images/iconAdd.svg";
-import { Card } from "utils/types/Card";
 import TagList from "shared/TagList/TagList";
+import {
+  filterByCategory,
+  filterBySearch,
+  filterByTags,
+} from "utils/helpers/filters";
 
 const Cards = () => {
   const { cards, selectedCategory, searchValue } = useContext(CardsContext);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
 
-  const filterByCategory = (card: Card) => {
-    switch (selectedCategory) {
-      case "all":
-        if (!card.isDeleted) {
-          return card;
-        }
-        break;
-      case "deleted":
-        if (card.isDeleted) {
-          return card;
-        }
-        break;
-      case "favorites":
-        if (card.isFavorite) {
-          return card;
-        }
-        break;
-    }
-  };
-
-  const filterBySearch = (card: Card) => {
-    if (card.title.toLowerCase().includes(searchValue.toLowerCase())) {
-      return card;
-    }
-  };
-
-  const filterByTags = (card: Card) => {
-    if (filters.length) {
-      if (card.tags.some((tag) => filters.includes(tag))) {
-        return card;
-      }
-    } else return card;
-  };
-
   const filteredCards = useMemo(() => {
     return cards
-      .filter(filterByCategory)
-      .filter(filterBySearch)
-      .filter(filterByTags);
+      .filter((card) => filterByCategory(card, selectedCategory))
+      .filter((card) => filterBySearch(card, searchValue))
+      .filter((card) => filterByTags(card, filters));
   }, [cards, selectedCategory, searchValue, filters]);
 
   return (

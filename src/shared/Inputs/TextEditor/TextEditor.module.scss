@@ -1,0 +1,19 @@
+@import "~/src/assets/styles/main.scss";
+
+.wrapper {
+  position: relative;
+}
+
+.container {
+  width: 400px;
+  height: 200px;
+  outline: none;
+  @include mainText;
+  padding: 5px 30px 5px 15px;
+  border: 1px solid $grey;
+  &:visited,
+  &:focus,
+  &:hover {
+    border: 1.5px solid $secondary;
+  }
+}

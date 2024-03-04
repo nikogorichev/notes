@@ -9,7 +9,7 @@ import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
 import CardsContext from "providers/Cards/CardsContext";
-import ModalWindowEditor from "./ModalWindowEditor/ModalWindowEditor";
+import TextEditor from "../Inputs/TextEditor/TextEditor";
 import { Descendant } from "slate";
 
 type ModalWindowProps = {
@@ -79,6 +79,7 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
         </div>
         <div className={styles.inputBlock}>
           <div className={styles.inputs}>
+            <div>
             <Input
               type="text"
               name="title"
@@ -87,7 +88,8 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
               onChange={handleOnChange}
               className={styles.inputModal}
             />
-            <ModalWindowEditor value={values["description"]} setValue={handleOnChangeDescription}/>
+            <TextEditor value={values["description"]} setValue={handleOnChangeDescription}/>
+            </div>
             <TagList
               selectedFilter={values["tags"]}
               setSelectedFilter={(selectedTags) =>

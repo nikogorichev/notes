@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
 import styles from "./EditorComponents.module.scss";
 
@@ -11,7 +9,6 @@ import {
   LegacyRef,
   MouseEvent,
 } from "react";
-import { cx, css } from "@emotion/css";
 import { useSlate } from "slate-react";
 import { BaseEditor, Editor, Element as SlateElement, Transforms } from "slate";
 
@@ -26,9 +23,7 @@ const LIST_TYPES = ["numbered-list", "bulleted-list"];
 export const Button = forwardRef(
   (
     {
-      className,
       active,
-      reversed,
       ...props
     }: PropsWithChildren<
       {
@@ -49,7 +44,7 @@ Button.displayName = "Button";
 
 export const Icon = forwardRef(
   (
-    { className, ...props }: PropsWithChildren<BaseProps>,
+    { ...props }: PropsWithChildren<BaseProps>,
     ref: LegacyRef<HTMLSpanElement>
   ) => <span {...props} ref={ref} className={"material-icons"} />
 );
@@ -58,7 +53,7 @@ Icon.displayName = "Icon";
 
 export const Menu = forwardRef(
   (
-    { className, ...props }: PropsWithChildren<BaseProps>,
+    { ...props }: PropsWithChildren<BaseProps>,
     ref: LegacyRef<HTMLDivElement>
   ) => <div {...props} data-test-id="menu" ref={ref} className={styles.menu} />
 );
@@ -66,10 +61,9 @@ export const Menu = forwardRef(
 Menu.displayName = "Menu";
 
 export const Toolbar = forwardRef(
-  (
-    { className, ...props }: PropsWithChildren<BaseProps>,
-    ref: Ref<HTMLDivElement>
-  ) => <Menu {...props} ref={ref} />
+  ({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLDivElement>) => (
+    <Menu {...props} ref={ref} />
+  )
 );
 
 Toolbar.displayName = "Toolbar";
