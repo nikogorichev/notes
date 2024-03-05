@@ -18,7 +18,7 @@
   position: absolute;
   z-index: 2;
   width: 32vw;
-  height: 350px;
+  height: 450px;
   background-color: $white;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06),
@@ -84,5 +84,11 @@
 }
 
 .inputModal {
-  width: 300px;
+  width: 400px;
+  border-radius: 0px !important;
+  font-weight: 600 !important;
+}
+
+.displayNone {
+  display: none;
 }

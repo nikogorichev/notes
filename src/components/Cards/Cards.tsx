@@ -1,47 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import styles from "./Cards.module.scss";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
 import CardsContext from "providers/Cards/CardsContext";
 import CardItem from "./CardItem/CardItem";
 import Button from "shared/Button/Button";
 import { ReactComponent as IconAdd } from "assets/images/iconAdd.svg";
-import { Card } from "utils/types/Card";
 import TagList from "shared/TagList/TagList";
+import {
+  filterByCategory,
+  filterBySearch,
+  filterByTags,
+} from "utils/helpers/filters";
 
 const Cards = () => {
-  const { cards, selectedList, searchValue } = useContext(CardsContext);
-  const [currentCards, setCurrentCards] = useState<Record<string, Card>>({});
+  const { cards, selectedCategory, searchValue } = useContext(CardsContext);
   const [filters, setFilters] = useState<string[]>([]);
   const [isOpenWindow, setIsOpenWindow] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(cards));
-  }, [cards]);
-
-  useEffect(() => {
-    // НУЖНО ЛИ ВЫНОСИТЬ В ОТДЕЛЬНУЮ ФУНКЦИЮ?
-    const filteredObjectOfCard: Record<string, Card> = {};
-    Object.entries(cards).forEach(([id, value]) => {
-      switch (selectedList) {
-        case "all":
-          if (!value.isDeleted) {
-            filteredObjectOfCard[id] = value;
-          }
-          break;
-        case "deleted":
-          if (value.isDeleted) {
-            filteredObjectOfCard[id] = value;
-          }
-          break;
-        case "favorites":
-          if (value.isFavorite) {
-            filteredObjectOfCard[id] = value;
-          }
-          break;
-      }
-    });
-    setCurrentCards(filteredObjectOfCard);
-  }, [selectedList, cards]);
+  const filteredCards = useMemo(() => {
+    return cards
+      .filter((card) => filterByCategory(card, selectedCategory))
+      .filter((card) => filterBySearch(card, searchValue))
+      .filter((card) => filterByTags(card, filters));
+  }, [cards, selectedCategory, searchValue, filters]);
 
   return (
     <>
@@ -59,24 +40,13 @@ const Cards = () => {
           />
         </div>
         <div className={styles.cardList}>
-          {Object.values(currentCards)
-            .filter(
-              (card) =>
-                card.title.toLowerCase().includes(searchValue.toLowerCase()) &&
-                (filters.length
-                  ? card.tags.some((tag) => filters.includes(tag))
-                  : true)
-            )
-            .map((card) => {
-              return <CardItem key={card.id} card={card} />;
-            })}
+          {filteredCards.map((card) => {
+            return <CardItem key={card.id} card={card} />;
+          })}
         </div>
       </div>
       {isOpenWindow ? (
-        <ModalWindow
-          closeBtnFunc={() => setIsOpenWindow(false)}
-          selectedCard=""
-        />
+        <ModalWindow closeBtnFunc={() => setIsOpenWindow(false)} />
       ) : (
         ""
       )}

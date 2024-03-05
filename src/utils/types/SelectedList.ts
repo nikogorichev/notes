@@ -1,1 +1,0 @@
-export type SelectedListType = "all" | "deleted" | "favorites"

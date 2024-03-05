@@ -1,30 +1,28 @@
 import { useState } from "react";
 import CardsContext from "./CardsContext";
-import { Card } from "utils/types/Card";
-import { SelectedListType } from "utils/types/SelectedList";
+import { SelectedCategoryType } from "utils/types/SelectedCategory";
+import { useLocalStorage } from "utils/hooks/useLocalStorage";
 
 type CardsProviderProps = {
   children: JSX.Element;
 };
 
 const CardsProvider = ({ children }: CardsProviderProps) => {
-  const [cards, setCards] = useState<Record<string, Card>>(
-    localStorage.getItem("notes")
-      ? JSON.parse(localStorage.getItem("notes") || "")
-      : {}
-  );
+  const [cards, setCards] = useLocalStorage("cards")
   const [searchValue, setSearchValue] = useState("");
-  const [selectedList, setSelectedList] = useState<SelectedListType>("all");
+  const [selectedCategory, setSelectedCategory] = useState<SelectedCategoryType>("all");
+
+  // useLocalStorage()
 
   return (
     <CardsContext.Provider
       value={{
         cards,
         searchValue,
-        selectedList,
+        selectedCategory,
         setCards,
         setSearchValue,
-        setSelectedList,
+        setSelectedCategory,
       }}
     >
       {children}

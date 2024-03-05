@@ -5,45 +5,64 @@ import Button from "shared/Button/Button";
 import { ReactComponent as IconBasket } from "assets/images/iconBasket.svg";
 import { ReactComponent as IconFavorite } from "assets/images/iconFavorite.svg";
 import { ReactComponent as IconEdit } from "assets/images/iconEdit.svg";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import CardsContext from "providers/Cards/CardsContext";
 import ModalWindow from "shared/ModalWindow/ModalWindow";
+import {
+  Editable,
+  RenderElementProps,
+  RenderLeafProps,
+  Slate,
+  withReact,
+} from "slate-react";
+import { withHistory } from "slate-history";
+import { createEditor } from "slate";
+import { Element, Leaf } from "utils/slateEditor/toolbarElements";
 
 type CardItemProps = {
   card: Card;
 };
 
 const CardItem = ({ card }: CardItemProps) => {
-  const {
-    cards,
-
-    setCards,
-  } = useContext(CardsContext);
+  const { cards, setCards } = useContext(CardsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   const handleSetFavoriteCards = () => {
-    const selectedCard = card;
+    const selectedCard = Object.assign({}, card);
     selectedCard.isFavorite = !card.isFavorite;
-    setCards({ ...cards, [card.id]: selectedCard });
+    setCards((prev) =>
+      prev.map((element) => {
+        return element.id === selectedCard.id
+          ? { ...card, isFavorite: selectedCard.isFavorite }
+          : element;
+      })
+    );
   };
 
   const handleDeleteCards = () => {
     if (!card.isDeleted) {
-      setCards({
-        ...cards,
-        [card.id]: { ...card, isDeleted: true, isFavorite: false },
-      });
+      setCards((prev) =>
+        prev.map((element) =>
+          element.id === card.id
+            ? { ...card, isFavorite: false, isDeleted: true }
+            : element
+        )
+      );
     } else {
-      const newCardList: Record<string, Card> = {};
-      Object.keys(cards).forEach((key) => {
-        if (key !== card.id) {
-          newCardList[key] = cards[key];
-        }
-      });
-      setCards(newCardList);
+      setCards(cards.filter((element) => element.id !== card.id));
     }
   };
+
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    [card.description]
+  );
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <Leaf {...props} />,
+    [card.description]
+  );
 
   return (
     <>
@@ -94,13 +113,21 @@ const CardItem = ({ card }: CardItemProps) => {
               </Button>
             </div>
           </div>
-          <div className={styles.description}>{card.description}</div>
+          {/* <div className={styles.description}>{card.description}</div> */}
+          <Slate editor={editor} initialValue={card.description}>
+            <Editable
+              className={styles.container}
+              renderElement={renderElement}
+              renderLeaf={renderLeaf}
+              readOnly
+            />
+          </Slate>
         </div>
       </div>
       {isModalOpen ? (
         <ModalWindow
           closeBtnFunc={() => setIsModalOpen(false)}
-          selectedCard={card.id}
+          selectedCard={card}
         />
       ) : (
         ""

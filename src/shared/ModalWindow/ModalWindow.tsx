@@ -3,15 +3,16 @@ import styles from "./ModalWindow.module.scss";
 import { Card } from "utils/types/Card";
 import { ReactComponent as IconClose } from "assets/images/iconClose.svg";
 import Input from "shared/Inputs/Input/Input";
-import Textarea from "shared/Inputs/Textarea/Textarea";
 import TagList from "shared/TagList/TagList";
 import Button from "shared/Button/Button";
 import { tagsDict } from "utils/dict/TagsDict";
 import CardsContext from "providers/Cards/CardsContext";
+import TextEditor from "../Inputs/TextEditor/TextEditor";
+import { Descendant } from "slate";
 
 type ModalWindowProps = {
   closeBtnFunc: () => void;
-  selectedCard: string;
+  selectedCard?: Card;
 };
 
 const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
@@ -19,10 +20,15 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
 
   const [values, setValues] = useState<Card>({
     // КАК ФОРМИРОВАТЬ ID
-    id: cards[selectedCard]?.["id"] || new Date().toString().toString(),
-    title: cards[selectedCard]?.["title"] || "",
-    description: cards[selectedCard]?.["description"] || "",
-    tags: cards[selectedCard]?.["tags"] || [],
+    id: selectedCard?.["id"] || new Date().toString(),
+    title: selectedCard?.["title"] || "",
+    description: selectedCard?.["description"] || [
+      {
+        type: "paragraph",
+        children: [{ text: "" }],
+      },
+    ],
+    tags: selectedCard?.["tags"] || [],
   });
 
   const handleOnChange = (
@@ -32,8 +38,23 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
     setValues({ ...values, [name]: value });
   };
 
+  const handleOnChangeDescription = (value: Descendant[]) => {
+    setValues({ ...values, description: value });
+  };
+
   const handleAddCard = () => {
-    setCards({ ...cards, [values.id]: values });
+    if (selectedCard) {
+      setCards((prev) =>
+        prev.map((element) =>
+          element.id === values.id
+            ? { ...values, id: new Date().toString() }
+            : element
+        )
+      );
+    } else {
+      setCards([...cards, values]);
+    }
+
     closeBtnFunc();
   };
 
@@ -59,21 +80,20 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
         </div>
         <div className={styles.inputBlock}>
           <div className={styles.inputs}>
-            <Input
-              type="text"
-              name="title"
-              placeholder="Название"
-              value={values["title"]}
-              onChange={handleOnChange}
-              className={styles.inputModal}
-            />
-            <Textarea
-              name="description"
-              placeholder="Описание"
-              value={values["description"]}
-              onChange={handleOnChange}
-              className={styles.inputModal}
-            />
+            <div>
+              <Input
+                type="text"
+                name="title"
+                placeholder="Название"
+                value={values["title"]}
+                onChange={handleOnChange}
+                className={styles.inputModal}
+              />
+              <TextEditor
+                value={values["description"]}
+                setValue={handleOnChangeDescription}
+              />
+            </div>
             <TagList
               selectedFilter={values["tags"]}
               setSelectedFilter={(selectedTags) =>

@@ -1,22 +1,22 @@
 import { useContext } from "react";
 import styles from "./ListButton.module.scss";
 import CardsContext from "providers/Cards/CardsContext";
-import { SelectedListType } from "utils/types/SelectedList";
+import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
 type ListButtonProps = {
-  list: SelectedListType;
+  list: SelectedCategoryType;
   content: { title: string; icon: JSX.Element };
 };
 const ListButton = ({ list, content }: ListButtonProps) => {
-  const { selectedList, setSelectedList } = useContext(CardsContext);
+  const { selectedCategory, setSelectedCategory } = useContext(CardsContext);
 
-  const isSelectedList = selectedList === list;
+  const isSelectedCategory = selectedCategory === list;
   return (
-    <div className={styles.wrapper} onClick={() => setSelectedList(list)}>
+    <div className={styles.wrapper} onClick={() => setSelectedCategory(list)}>
       <div
-        className={isSelectedList ? styles.flag_selected : styles.flag}
+        className={isSelectedCategory ? styles.flag_selected : styles.flag}
       ></div>
-      <div className={isSelectedList ? styles.icon_selected : styles.icon}>
+      <div className={isSelectedCategory ? styles.icon_selected : styles.icon}>
         {content.icon}
       </div>
       <div className={styles.title}>{content.title}</div>
