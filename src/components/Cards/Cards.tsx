@@ -19,9 +19,9 @@ const Cards = () => {
 
   const filteredCards = useMemo(() => {
     return cards
-      .filter((card) => filterByCategory(card, selectedCategory))
-      .filter((card) => filterBySearch(card, searchValue))
-      .filter((card) => filterByTags(card, filters));
+      .filter(filterByCategory(selectedCategory))
+      .filter(filterBySearch(searchValue))
+      .filter(filterByTags(filters));
   }, [cards, selectedCategory, searchValue, filters]);
 
   return (

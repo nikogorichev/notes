@@ -2,8 +2,6 @@ import { Dispatch, createContext } from "react";
 import { Card } from "utils/types/Card";
 import { SelectedCategoryType } from "utils/types/SelectedCategory";
 
-// КАК ПРАВИЛЬНО ТИПИЗИРОВАТЬ КОНТЕКСТ
-
 type CardsContextType = {
   cards: Card[];
   searchValue: string;

@@ -30,12 +30,10 @@ const CardItem = ({ card }: CardItemProps) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   const handleSetFavoriteCards = () => {
-    const selectedCard = Object.assign({}, card);
-    selectedCard.isFavorite = !card.isFavorite;
     setCards((prev) =>
       prev.map((element) => {
-        return element.id === selectedCard.id
-          ? { ...card, isFavorite: selectedCard.isFavorite }
+        return element.id === card.id
+          ? {...card, isFavorite: !card.isFavorite}
           : element;
       })
     );

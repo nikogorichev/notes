@@ -8,11 +8,10 @@ type CardsProviderProps = {
 };
 
 const CardsProvider = ({ children }: CardsProviderProps) => {
-  const [cards, setCards] = useLocalStorage("cards")
+  const [cards, setCards] = useLocalStorage("cards");
   const [searchValue, setSearchValue] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<SelectedCategoryType>("all");
-
-  // useLocalStorage()
+  const [selectedCategory, setSelectedCategory] =
+    useState<SelectedCategoryType>("all");
 
   return (
     <CardsContext.Provider
