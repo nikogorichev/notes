@@ -7,17 +7,19 @@ type TagListProps = {
 };
 const TagList = ({ selectedFilter, setSelectedFilter }: TagListProps) => {
   const handleOnClick = (key: string) => {
-    selectedFilter.includes(key)
-      ? setSelectedFilter(selectedFilter.filter((filter) => filter !== key))
-      : setSelectedFilter([...selectedFilter, key]);
+    return () =>
+      selectedFilter.includes(key)
+        ? setSelectedFilter(selectedFilter.filter((filter) => filter !== key))
+        : setSelectedFilter([...selectedFilter, key]);
   };
+
   return (
     <div className={styles.wrapper}>
       {Object.entries(tagsDict).map(([key, value]) => {
         return (
           <div
             key={key}
-            onClick={() => handleOnClick(key)}
+            onClick={handleOnClick(key)}
             className={`${styles.btn} ${styles[`btn_${value.color}`]} ${
               selectedFilter.includes(key) ? styles.btn_selected : ""
             }`}

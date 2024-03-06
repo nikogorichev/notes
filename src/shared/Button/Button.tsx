@@ -1,12 +1,11 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 import styles from "./Button.module.scss";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  children: JSX.Element | string;
 }
 
-const Button = ({ className, children, ...otherProps }: ButtonProps) => {
+const Button: FC<ButtonProps> = ({ className, children, ...otherProps }) => {
   return (
     <button className={`${styles.button} ${className}`} {...otherProps}>
       {children}

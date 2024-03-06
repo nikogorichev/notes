@@ -19,7 +19,6 @@ const ModalWindow = ({ closeBtnFunc, selectedCard }: ModalWindowProps) => {
   const { cards, setCards } = useContext(CardsContext);
 
   const [values, setValues] = useState<Card>({
-    // КАК ФОРМИРОВАТЬ ID
     id: selectedCard?.["id"] || new Date().toString(),
     title: selectedCard?.["title"] || "",
     description: selectedCard?.["description"] || [
